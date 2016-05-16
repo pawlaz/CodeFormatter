@@ -2,8 +2,6 @@ package org.pawlaz.codeformatter.io.writer;
 
 import org.pawlaz.codeformatter.io.exceptions.WriterException;
 
-import java.io.IOException;
-
 /**
  * Created by Hns on 15.05.2016.
  * IWriter implementation for writing in string
@@ -19,38 +17,19 @@ public class StringWriter implements IWriter {
     }
 
     /**
-     * Writes single character in string
-     * @param c - int specifying a character to be written
+     * Adds a string token to string
+     * @param s - string to be written
      * @throws WriterException if an write error occurs
      */
-    public void write(final char c) throws WriterException {
-        stringBuilder.append(c);
-    }
-
-    /**
-     * Writes count of offsets in string
-     * @param count - nesting level
-     * @throws WriterException if an write error occurs
-     */
-    public void writeOffset(final int count) throws WriterException {
-        for (int i = 0; i < count; i++) {
-            stringBuilder.append(OFFSET);
-        }
-    }
-
-    /**
-     * Writes line separator in string
-     * @throws WriterException if an write error occurs
-     */
-    public void writeLineSeparator() throws WriterException {
-        stringBuilder.append(System.lineSeparator());
+    public void writeString(final String s)throws WriterException {
+        stringBuilder.append(s);
     }
 
     /**
      * Closes the source
-     * @throws IOException if an I/O error occurs
+     * @throws WriterException if an close error occurs
      */
-    public void close() throws IOException {
+    public void close() throws WriterException {
        // stringBuilder.setLength(0);
     }
 

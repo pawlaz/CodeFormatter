@@ -38,9 +38,9 @@ public class StringReader implements IReader {
 
     /**
      * Close inputStream
-     * @throws IOException if an I/O error occurs
+     * @throws ReaderException if an close error occurs
      */
-    public void close() throws IOException {
+    public void close() throws ReaderException {
         stringReader.close();
     }
 }

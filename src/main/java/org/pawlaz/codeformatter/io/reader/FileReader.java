@@ -45,9 +45,13 @@ public class FileReader implements IReader {
 
     /**
      * Close inputStream
-     * @throws IOException if an I/O error occurs
+     * @throws ReaderException if an close error occurs
      */
-    public void close() throws IOException {
-        inputStream.close();
+    public void close() throws ReaderException {
+        try {
+            inputStream.close();
+        } catch (IOException e) {
+            throw new ReaderException();
+        }
     }
 }

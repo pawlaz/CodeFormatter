@@ -13,7 +13,7 @@ import org.pawlaz.codeformatter.io.writer.StringWriter;
 public class Main {
     public static void main(String[] args) {
         Formatter formatter = new Formatter();
-        String s = "public main(123){ qwe;{qwe;}}";
+        String s = "while (inputStream.hasNext()){\nchar symbol = inputStream.read();}";
         StringWriter sw = new StringWriter();
         formatter.format(new StringReader(s),sw);
         System.out.println(sw.toString());

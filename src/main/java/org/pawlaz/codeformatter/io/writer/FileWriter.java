@@ -27,40 +27,13 @@ public class FileWriter implements IWriter {
     }
 
     /**
-     * Write single character in file
-     * @param c - int specifying a character to be written
-     * @throws WriterException
-     */
-    public void write(final char c) throws WriterException {
-        try {
-            outputStream.write(c);
-        } catch (IOException e) {
-            throw new WriterException();
-        }
-    }
-
-    /**
-     * Write a count of offsets in file
-     * @param count - nesting level
+     * Write string in file
+     * @param s - string to be written
      * @throws WriterException if an write error occurs
      */
-    public void writeOffset(final int count) throws WriterException {
+    public void writeString(final String s) throws WriterException {
         try {
-            for (int i = 0; i < count; i++) {
-                outputStream.write(OFFSET.getBytes());
-            }
-        } catch (IOException e) {
-            throw new WriterException();
-        }
-    }
-
-    /**
-     * Writes a line separator in file
-     * @throws WriterException if an write error occurs
-     */
-    public void writeLineSeparator() throws WriterException {
-        try {
-            outputStream.write(System.lineSeparator().getBytes());
+            outputStream.write(s.getBytes());
         } catch (IOException e) {
             throw new WriterException();
         }
@@ -68,9 +41,9 @@ public class FileWriter implements IWriter {
 
     /**
      * Close outputStream
-     * @throws IOException if an I/O error occurs
+     * @throws WriterException if an close error occurs
      */
-    public void close() throws IOException {
+    public void close() throws WriterException {
         try {
             outputStream.close();
         } catch (IOException e) {
