@@ -56,7 +56,9 @@ public class Formatter {
                     bktCount--;
                     stringMaker.addOffset(bktCount);
                     stringMaker.addSymbol(currentSymbol);
-                    stringMaker.addLineSeparator();
+                    if (bktCount > 0)
+                        stringMaker.addLineSeparator();
+
                     firstInLine = true;
                     firstInWord = false;
                 } else {

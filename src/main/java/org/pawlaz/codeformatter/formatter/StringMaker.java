@@ -28,7 +28,7 @@ public class StringMaker {
      * add line separator to formatted string
      */
     public void addLineSeparator() {
-        stringBuilder.append(System.lineSeparator());
+        stringBuilder.append('\n');
     }
 
     /**
