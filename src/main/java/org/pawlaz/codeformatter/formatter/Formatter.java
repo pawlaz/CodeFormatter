@@ -1,9 +1,10 @@
 package org.pawlaz.codeformatter.formatter;
 
+import org.pawlaz.codeformatter.formatter.exceptions.FormatterException;
+import org.pawlaz.codeformatter.io.exceptions.ReaderException;
+import org.pawlaz.codeformatter.io.exceptions.WriterException;
 import org.pawlaz.codeformatter.io.reader.IReader;
 import org.pawlaz.codeformatter.io.writer.IWriter;
-
-import java.io.IOException;
 
 /**
  * Created by Hns on 15.05.2016.
@@ -22,17 +23,16 @@ public class Formatter {
      * Produces data formatting
      * @param reader - input source.
      * @param writer - output source.
+     * @throws FormatterException if an format error occurs
      */
-    public void format(final IReader reader, final IWriter writer) {
+    public void format(final IReader reader, final IWriter writer) throws FormatterException {
         char currentSymbol;
         int bktCount = 0;
         boolean firstInLine = false;
         boolean firstInWord = false;
-
         try {
-            while (true) {
+            while (reader.ready()) {
                 currentSymbol = (char) reader.read();
-                stringMaker.clear();
                 if (currentSymbol == '\n') {
                     //ignore
                 } else if (currentSymbol == ' ') {
@@ -74,12 +74,16 @@ public class Formatter {
                 }
                 writer.writeString(stringMaker.getResult());
             }
-        } catch (Exception e) {
+        } catch (ReaderException | WriterException e) {
+            throw new FormatterException(e);
+        } finally {
             try {
-                reader.close();
-                writer.close();
-            } catch (IOException ex) {
-                e.printStackTrace();
+                if (reader != null)
+                    reader.close();
+                if (writer != null)
+                    writer.close();
+            } catch (Exception ex) {
+                throw new FormatterException(ex);
             }
         }
     }

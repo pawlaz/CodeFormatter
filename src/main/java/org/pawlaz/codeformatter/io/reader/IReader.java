@@ -3,6 +3,7 @@ package org.pawlaz.codeformatter.io.reader;
 import org.pawlaz.codeformatter.io.exceptions.ReaderException;
 
 import java.io.Closeable;
+import java.io.IOException;
 
 /**
  * Created by Hns on 15.05.2016.
@@ -15,6 +16,13 @@ public interface IReader extends Closeable {
      * @throws ReaderException if an read error occurs
      */
     int read() throws ReaderException;
+
+    /**
+     * Checks the availability of reading
+     * @return True if the next read() is guaranteed not to block for input, false otherwise
+     * @throws ReaderException if an read error occurs
+     */
+    boolean ready() throws ReaderException;
 
     /**
      * Closes this source

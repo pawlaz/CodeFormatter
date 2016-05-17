@@ -30,7 +30,8 @@ public class StringWriter implements IWriter {
      * @throws WriterException if an close error occurs
      */
     public void close() throws WriterException {
-       // stringBuilder.setLength(0);
+        //как корректно освободить ресурсы?
+       // stringBuilder = null;
     }
 
     @Override

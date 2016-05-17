@@ -1,9 +1,9 @@
 package org.pawlaz.codeformatter;
 
 import org.pawlaz.codeformatter.formatter.Formatter;
-import org.pawlaz.codeformatter.io.reader.FileReader;
+import org.pawlaz.codeformatter.io.reader.IReader;
 import org.pawlaz.codeformatter.io.reader.StringReader;
-import org.pawlaz.codeformatter.io.writer.FileWriter;
+import org.pawlaz.codeformatter.io.writer.IWriter;
 import org.pawlaz.codeformatter.io.writer.StringWriter;
 
 /**
@@ -12,18 +12,13 @@ import org.pawlaz.codeformatter.io.writer.StringWriter;
  */
 public class Main {
     public static void main(String[] args) {
-        Formatter formatter = new Formatter();
-        String s = "while (inputStream.hasNext()){\nchar symbol = inputStream.read();}";
-        StringWriter sw = new StringWriter();
-        formatter.format(new StringReader(s),sw);
-        System.out.println(sw.toString());
-//        try {
-//            FileReader fr = new FileReader("E:/Я/1.txt");
-//            FileWriter fw = new FileWriter("E:/Я/2.txt");
-//            formatter.format(fr,fw);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
+        try {
+            Formatter f = new Formatter();
+            IWriter writer = new StringWriter();
+            f.format(new StringReader("a++b--c==2 123 qwe=5"), writer);
+            System.out.println(writer.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

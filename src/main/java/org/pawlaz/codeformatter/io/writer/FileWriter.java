@@ -22,7 +22,7 @@ public class FileWriter implements IWriter {
         try {
             this.outputStream = new FileOutputStream(filename);
         } catch (IOException e) {
-            throw new WriterException();
+            throw new WriterException(e);
         }
     }
 
@@ -35,7 +35,7 @@ public class FileWriter implements IWriter {
         try {
             outputStream.write(s.getBytes());
         } catch (IOException e) {
-            throw new WriterException();
+            throw new WriterException(e);
         }
     }
 
@@ -47,7 +47,7 @@ public class FileWriter implements IWriter {
         try {
             outputStream.close();
         } catch (IOException e) {
-            throw new WriterException();
+            throw new WriterException(e);
         }
     }
 }

@@ -47,7 +47,9 @@ public class StringMaker {
      * @return formatted string
      */
     public String getResult() {
-        return stringBuilder.toString();
+        String s = stringBuilder.toString();
+        clear();
+        return s;
     }
 
     /**
@@ -57,4 +59,7 @@ public class StringMaker {
         stringBuilder.setLength(0);
     }
 
+    public int getLength() {
+        return stringBuilder.length();
+    }
 }

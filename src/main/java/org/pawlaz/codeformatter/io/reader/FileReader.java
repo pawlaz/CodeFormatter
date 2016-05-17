@@ -8,7 +8,7 @@ import java.io.InputStream;
 
 /**
  * Created by Hns on 15.05.2016.
- * IReader implementation for reading from file
+ * IReader implementation for reading files
  */
 public class FileReader implements IReader {
     private InputStream inputStream;
@@ -22,24 +22,34 @@ public class FileReader implements IReader {
         try {
             inputStream = new FileInputStream(filename);
         } catch (IOException e) {
-            throw new ReaderException();
+            throw new ReaderException(e);
         }
     }
 
     /**
      * Reads a single character from file
-     * @return The current character read from file, or ReaderException if the end of the source has been reached
-     * @throws ReaderException if an write error occurs
+     * @return Reads a single character.
+     * This method will block until a character is available, an read error occurs, or the end of the stream is reached
+     * @throws ReaderException if an read error occurs
      */
     public int read() throws ReaderException {
         try {
-            int symbol = inputStream.read();
-            if (symbol < 0)
-                throw new ReaderException();
-
-            return symbol;
+            return inputStream.read();
         } catch (IOException e) {
-            throw new ReaderException();
+            throw new ReaderException(e);
+        }
+    }
+
+    /**
+     * Checks the availability of reading
+     * @return True if the next read() is guaranteed not to block for input, false otherwise
+     * @throws ReaderException if an read error occurs
+     */
+    public boolean ready() throws ReaderException {
+        try {
+            return inputStream.available() > 0;
+        } catch (IOException e) {
+            throw new ReaderException(e);
         }
     }
 
@@ -51,7 +61,7 @@ public class FileReader implements IReader {
         try {
             inputStream.close();
         } catch (IOException e) {
-            throw new ReaderException();
+            throw new ReaderException(e);
         }
     }
 }
