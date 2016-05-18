@@ -43,6 +43,7 @@ public class FileWriter implements IWriter {
      * Close outputStream
      * @throws WriterException if an close error occurs
      */
+    @Override
     public void close() throws WriterException {
         try {
             outputStream.close();

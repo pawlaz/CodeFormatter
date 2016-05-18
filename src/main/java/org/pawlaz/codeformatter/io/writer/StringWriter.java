@@ -29,6 +29,7 @@ public class StringWriter implements IWriter {
      * Closes the source
      * @throws WriterException if an close error occurs
      */
+    @Override
     public void close() throws WriterException {
         //как корректно освободить ресурсы?
        // stringBuilder = null;

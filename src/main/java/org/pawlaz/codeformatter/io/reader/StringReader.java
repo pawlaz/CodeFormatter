@@ -51,6 +51,7 @@ public class StringReader implements IReader {
      * Close inputStream
      * @throws ReaderException if an close error occurs
      */
+    @Override
     public void close() throws ReaderException {
         try {
             inputStream.close();

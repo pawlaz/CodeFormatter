@@ -23,10 +23,4 @@ public interface IReader extends Closeable {
      * @throws ReaderException if an read error occurs
      */
     boolean ready() throws ReaderException;
-
-    /**
-     * Closes this source
-     * @throws ReaderException if an read error occurs
-     */
-    void close() throws ReaderException;
 }

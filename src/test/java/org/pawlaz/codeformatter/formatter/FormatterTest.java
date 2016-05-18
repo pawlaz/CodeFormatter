@@ -28,7 +28,27 @@ public class FormatterTest {
     @Before
     public void init()
     {
-        formatter = new Formatter();
+        try {
+            IFormatterStrategies strategies = new ProcessStrategies(' ',4,'\n');
+            formatter = new Formatter(strategies);
+        }catch (FormatterException e)
+        {
+            fail();
+        }
+
+    }
+
+    @Test
+    public void test0FormatFirstLevel()
+    {
+        try {
+            IReader reader = null;
+            IWriter writer = new StringWriter();
+            formatter.format(reader, writer);
+            fail();
+        } catch (FormatterException e) {
+            //pass
+        }
     }
 
     @Test
@@ -62,7 +82,7 @@ public class FormatterTest {
     public void test3FormatFirstLevel()
     {
         try {
-            String badString = "while (inputStream.hasNext()) {\nchar symbol = inputStream.read();while(true){method();}\n}\n";
+            String badString = "while (inputStream.hasNext()) {\nchar symbol = inputStream.read(); while(true){method();}\n}\n";
             IReader reader = new StringReader(badString);
             IWriter writer = new StringWriter();
             formatter.format(reader,writer);

@@ -1,22 +1,26 @@
 package org.pawlaz.codeformatter.formatter;
 
 import org.pawlaz.codeformatter.formatter.exceptions.FormatterException;
-import org.pawlaz.codeformatter.io.exceptions.ReaderException;
-import org.pawlaz.codeformatter.io.exceptions.WriterException;
 import org.pawlaz.codeformatter.io.reader.IReader;
 import org.pawlaz.codeformatter.io.writer.IWriter;
+
+import java.util.HashMap;
 
 /**
  * Created by Hns on 15.05.2016.
  * The formatter produces formatting
  */
 public class Formatter {
-    private StringMaker stringMaker;
-    /**
-     * base constructor
-     */
-    public Formatter() {
-        stringMaker = new StringMaker();
+    private HashMap<Character, IFormatCommand> strategiesMap;
+    private IFormatCommand defaultCommand;
+
+    public Formatter(final IFormatterStrategies formatterStrategies) throws FormatterException {
+        try {
+            strategiesMap = formatterStrategies.getFormatterStrategies();
+            defaultCommand = formatterStrategies.defaultCommand();
+        } catch (Exception e) {
+            throw new FormatterException(e);
+        }
     }
 
     /**
@@ -27,54 +31,15 @@ public class Formatter {
      */
     public void format(final IReader reader, final IWriter writer) throws FormatterException {
         char currentSymbol;
-        int bktCount = 0;
-        boolean firstInLine = false;
-        boolean firstInWord = false;
         try {
             while (reader.ready()) {
                 currentSymbol = (char) reader.read();
-                if (currentSymbol == '\n') {
-                    //ignore
-                } else if (currentSymbol == ' ') {
-                    firstInWord = true;
-                } else if (currentSymbol == ';') {
-                    stringMaker.addSymbol(currentSymbol);
-                    stringMaker.addLineSeparator();
-                    firstInLine = true;
-                } else if (currentSymbol == '{') {
-                    if (firstInLine) {
-                        stringMaker.addOffset(bktCount);
-                    } else {
-                        stringMaker.addSymbol(' ');
-                        bktCount++;
-                        stringMaker.addSymbol(currentSymbol);
-                        stringMaker.addLineSeparator();
-                        firstInLine = true;
-                        firstInWord = false;
-                    }
-                } else if (currentSymbol == '}') {
-                    bktCount--;
-                    stringMaker.addOffset(bktCount);
-                    stringMaker.addSymbol(currentSymbol);
-                    if (bktCount > 0)
-                        stringMaker.addLineSeparator();
-
-                    firstInLine = true;
-                    firstInWord = false;
-                } else {
-                    if (firstInLine) {
-                        stringMaker.addOffset(bktCount);
-                        firstInLine = false;
-                        firstInWord = false;
-                    } else if (firstInWord) {
-                        stringMaker.addSymbol(' ');
-                        firstInWord = false;
-                    }
-                    stringMaker.addSymbol(currentSymbol);
-                }
-                writer.writeString(stringMaker.getResult());
+                if (strategiesMap.containsKey(currentSymbol))
+                    writer.writeString(strategiesMap.get(currentSymbol).format(currentSymbol));
+                else
+                    writer.writeString(defaultCommand.format(currentSymbol));
             }
-        } catch (ReaderException | WriterException e) {
+        } catch (Exception e) {
             throw new FormatterException(e);
         } finally {
             try {

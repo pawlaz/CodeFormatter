@@ -1,5 +1,7 @@
 package org.pawlaz.codeformatter.formatter;
 
+import java.util.Arrays;
+
 /**
  * Created by Hns on 16.05.2016.
  * Class for making lexemes to recording in stream
@@ -7,13 +9,23 @@ package org.pawlaz.codeformatter.formatter;
 public class StringMaker {
     private StringBuilder stringBuilder;
 
-    private final String BASE_OFFSET = "    ";
+    private int baseOffsetCount;
+    private char spaceSymbol;
+    private char lineSeparator;
+
+
+    public StringMaker(final char spaceSymbol, final int baseOffsetCount, final char lineSeparator) {
+        stringBuilder = new StringBuilder();
+        this.spaceSymbol = spaceSymbol;
+        this.baseOffsetCount = baseOffsetCount;
+        this.lineSeparator = lineSeparator;
+    }
 
     /**
-     * base constructor
+     * add space to formatted string
      */
-    public StringMaker() {
-        stringBuilder = new StringBuilder();
+    public void addSpace() {
+        stringBuilder.append(spaceSymbol);
     }
 
     /**
@@ -28,19 +40,18 @@ public class StringMaker {
      * add line separator to formatted string
      */
     public void addLineSeparator() {
-        stringBuilder.append('\n');
+        stringBuilder.append(lineSeparator);
     }
 
     /**
      * add offset to formatted string
-     * @param count - count of offsets (nested level)
+     * @param nestedLevel - nested level (count of offsets)
      */
-    public void addOffset(final int count) {
-        for (int i = 0; i < count; i++) {
-            stringBuilder.append(BASE_OFFSET);
-        }
+    public void addOffset(final int nestedLevel) {
+        char[] offset = new char[nestedLevel * baseOffsetCount];
+        Arrays.fill(offset, spaceSymbol);
+        stringBuilder.append(offset);
     }
-
 
     /**
      * Returns formatted string
@@ -57,9 +68,5 @@ public class StringMaker {
      */
     public void clear() {
         stringBuilder.setLength(0);
-    }
-
-    public int getLength() {
-        return stringBuilder.length();
     }
 }
