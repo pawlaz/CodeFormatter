@@ -14,6 +14,11 @@ public class Formatter {
     private HashMap<Character, IFormatCommand> strategiesMap;
     private IFormatCommand defaultCommand;
 
+    /**
+     * Constructs an Formatter with the specified character processing strategy
+     * @param formatterStrategies - character processing strategy
+     * @throws FormatterException if an format error occurs
+     */
     public Formatter(final IFormatterStrategies formatterStrategies) throws FormatterException {
         try {
             strategiesMap = formatterStrategies.getFormatterStrategies();

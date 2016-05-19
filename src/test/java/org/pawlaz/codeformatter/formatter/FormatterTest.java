@@ -2,6 +2,8 @@ package org.pawlaz.codeformatter.formatter;
 import org.junit.Before;
 import org.junit.Test;
 import org.pawlaz.codeformatter.formatter.exceptions.FormatterException;
+import org.pawlaz.codeformatter.io.PropertiesLoader;
+import org.pawlaz.codeformatter.io.exceptions.PropertiesLoaderException;
 import org.pawlaz.codeformatter.io.reader.IReader;
 import org.pawlaz.codeformatter.io.reader.StringReader;
 import org.pawlaz.codeformatter.io.writer.IWriter;
@@ -18,7 +20,7 @@ public class FormatterTest {
 
     Formatter formatter;
 
-    String goodStringFirstLevel = "while (inputStream.hasNext()) {\n" +
+    final String goodStringFirstLevel = "while (inputStream.hasNext()) {\n" +
             "    char symbol = inputStream.read();\n" +
             "    while(true) {\n" +
             "        method();\n" +
@@ -29,9 +31,11 @@ public class FormatterTest {
     public void init()
     {
         try {
-            IFormatterStrategies strategies = new ProcessStrategies(' ',4,'\n');
+            PropertiesLoader pl = new PropertiesLoader();
+            IFormatterStrategies strategies =
+                    new ProcessStrategies(pl.getSpaceSymbol(),pl.getBaseOffsetCount(),pl.getLineSeparator());
             formatter = new Formatter(strategies);
-        }catch (FormatterException e)
+        }catch (FormatterException | PropertiesLoaderException e)
         {
             fail();
         }

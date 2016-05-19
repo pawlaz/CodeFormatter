@@ -4,28 +4,41 @@ import java.util.Arrays;
 
 /**
  * Created by Hns on 16.05.2016.
- * Class for making lexemes to recording in stream
+ * Helper class for formation formatted strings
  */
 public class StringMaker {
     private StringBuilder stringBuilder;
 
     private int baseOffsetCount;
-    private char spaceSymbol;
+    private char indentSymbol;
     private char lineSeparator;
 
+    public char getIndentSymbol() {
+        return indentSymbol;
+    }
 
-    public StringMaker(final char spaceSymbol, final int baseOffsetCount, final char lineSeparator) {
+    public char getLineSeparator() {
+        return lineSeparator;
+    }
+
+    /**
+     * Constructs an StringMaker with the basic data necessary for it to work
+     * @param indentSymbol - symbol used to indent
+     * @param baseOffsetCount - offset size
+     * @param lineSeparator - symbol used for line separator
+     */
+    public StringMaker(final char indentSymbol, final int baseOffsetCount, final char lineSeparator) {
         stringBuilder = new StringBuilder();
-        this.spaceSymbol = spaceSymbol;
+        this.indentSymbol = indentSymbol;
         this.baseOffsetCount = baseOffsetCount;
         this.lineSeparator = lineSeparator;
     }
 
     /**
-     * add space to formatted string
+     * add indent symbol to formatted string
      */
-    public void addSpace() {
-        stringBuilder.append(spaceSymbol);
+    public void addIndentSymbol() {
+        stringBuilder.append(indentSymbol);
     }
 
     /**
@@ -49,7 +62,7 @@ public class StringMaker {
      */
     public void addOffset(final int nestedLevel) {
         char[] offset = new char[nestedLevel * baseOffsetCount];
-        Arrays.fill(offset, spaceSymbol);
+        Arrays.fill(offset, indentSymbol);
         stringBuilder.append(offset);
     }
 

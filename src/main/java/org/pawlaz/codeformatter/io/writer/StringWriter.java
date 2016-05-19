@@ -17,7 +17,7 @@ public class StringWriter implements IWriter {
     }
 
     /**
-     * Adds a string token to string
+     * Adds a input string to source string
      * @param s - string to be written
      * @throws WriterException if an write error occurs
      */

@@ -3,7 +3,6 @@ package org.pawlaz.codeformatter.io.writer;
 import org.pawlaz.codeformatter.io.exceptions.WriterException;
 
 import java.io.Closeable;
-import java.io.IOException;
 
 /**
  * Created by Hns on 15.05.2016.

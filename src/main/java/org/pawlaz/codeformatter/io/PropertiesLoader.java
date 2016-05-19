@@ -7,6 +7,7 @@ import java.util.Properties;
 
 /**
  * Created by Hns on 18.05.2016.
+ * Helper class for loading of properties of formatting
  */
 public class PropertiesLoader {
 
@@ -26,6 +27,10 @@ public class PropertiesLoader {
         return lineSeparator;
     }
 
+    /**
+     * base constructor with loading properties
+     * @throws PropertiesLoaderException if an loading of properties error occurs
+     */
     public PropertiesLoader() throws PropertiesLoaderException {
         try (FileInputStream fis = new FileInputStream("src/main/resources/config.properties")) {
             Properties properties = new Properties();
