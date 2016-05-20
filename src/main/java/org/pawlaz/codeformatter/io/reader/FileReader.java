@@ -32,9 +32,9 @@ public class FileReader implements IReader {
      * This method will block until a character is available, an read error occurs, or the end of the stream is reached
      * @throws ReaderException if an read error occurs
      */
-    public int read() throws ReaderException {
+    public char read() throws ReaderException {
         try {
-            return inputStream.read();
+            return (char) inputStream.read();
         } catch (IOException e) {
             throw new ReaderException(e);
         }

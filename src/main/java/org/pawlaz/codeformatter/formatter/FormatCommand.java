@@ -2,14 +2,14 @@ package org.pawlaz.codeformatter.formatter;
 
 /**
  * Created by Hns on 18.05.2016.
- * Basic interface for character processing commands
+ * Basic abstract class for character processing commands
  */
-@FunctionalInterface
-public interface IFormatCommand {
+
+public abstract class FormatCommand {
     /**
      * Formatting symbol
      * @param c - input character
      * @return formatted string with input character
      */
-    String format(Character c);
+    abstract String format(Character c);
 }

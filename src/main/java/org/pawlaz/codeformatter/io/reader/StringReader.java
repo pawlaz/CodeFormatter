@@ -26,9 +26,9 @@ public class StringReader implements IReader {
      * @return The character read, or -1 if the end of the stream has been reached
      * @throws ReaderException if an read error occurs
      */
-    public int read() throws ReaderException {
+    public char read() throws ReaderException {
         try {
-            return inputStream.read();
+            return (char) inputStream.read();
         } catch (IOException e) {
             throw new ReaderException(e);
         }

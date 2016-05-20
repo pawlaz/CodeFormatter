@@ -2,8 +2,8 @@ package org.pawlaz.codeformatter;
 
 
 import org.pawlaz.codeformatter.formatter.Formatter;
-import org.pawlaz.codeformatter.formatter.IFormatterStrategies;
-import org.pawlaz.codeformatter.formatter.ProcessStrategies;
+import org.pawlaz.codeformatter.formatter.IFormatterCommands;
+import org.pawlaz.codeformatter.formatter.ProcessCommands;
 import org.pawlaz.codeformatter.formatter.exceptions.FormatterException;
 import org.pawlaz.codeformatter.io.PropertiesLoader;
 import org.pawlaz.codeformatter.io.exceptions.PropertiesLoaderException;
@@ -32,7 +32,7 @@ public final class Main {
         IReader reader = null;
         IWriter writer = null;
         Formatter formatter;
-        IFormatterStrategies strategies;
+        IFormatterCommands commands;
         PropertiesLoader pl;
 
         try {
@@ -62,8 +62,8 @@ public final class Main {
                 }
 
                 pl = new PropertiesLoader();
-                strategies = new ProcessStrategies(pl.getIndentSymbol(), pl.getBaseOffsetCount(), pl.getLineSeparator());
-                formatter = new Formatter(strategies);
+                commands = new ProcessCommands(pl.getIndentSymbol(), pl.getBaseOffsetCount(), pl.getLineSeparator());
+                formatter = new Formatter(commands);
                 formatter.format(reader, writer);
 
                 if ("-s".equals(args[0])) {
@@ -89,7 +89,7 @@ public final class Main {
                 if (writer != null) {
                     writer.close();
                 }
-            } catch (Exception ex) {
+            } catch (ReaderException | WriterException ex) {
                 //pass
             }
         }

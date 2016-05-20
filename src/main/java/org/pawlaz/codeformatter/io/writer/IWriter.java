@@ -3,6 +3,7 @@ package org.pawlaz.codeformatter.io.writer;
 import org.pawlaz.codeformatter.io.exceptions.WriterException;
 
 import java.io.Closeable;
+import java.io.IOException;
 
 /**
  * Created by Hns on 15.05.2016.
@@ -15,4 +16,7 @@ public interface IWriter extends Closeable {
      * @throws WriterException if an write error occurs
      */
     void writeString(String s) throws WriterException;
+
+    @Override
+    void close() throws WriterException;
 }

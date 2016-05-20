@@ -34,8 +34,8 @@ public class FormatterTest {
     {
         try {
             PropertiesLoader pl = new PropertiesLoader();
-            IFormatterStrategies strategies =
-                    new ProcessStrategies(pl.getIndentSymbol(),pl.getBaseOffsetCount(),pl.getLineSeparator());
+            IFormatterCommands strategies =
+                    new ProcessCommands(pl.getIndentSymbol(),pl.getBaseOffsetCount(),pl.getLineSeparator());
             formatter = new Formatter(strategies);
         }catch (FormatterException | PropertiesLoaderException e) {
             fail();
@@ -43,25 +43,12 @@ public class FormatterTest {
 
     }
 
-    @Test
-    public void test0FormatFirstLevel()
+    @Test(expected = FormatterException.class)
+    public void test0FormatFirstLevel() throws FormatterException
     {
-        try {
-            reader = null;
-            writer = new StringWriter();
-            formatter.format(reader, writer);
-            fail();
-        } catch (FormatterException e) {
-            //pass
-        } finally {
-            try {
-                if (writer != null) {
-                    writer.close();
-                }
-            } catch (Exception ex) {
-                //pass
-            }
-        }
+        reader = null;
+        writer = null;
+        formatter.format(reader, writer);
     }
 
     @Test

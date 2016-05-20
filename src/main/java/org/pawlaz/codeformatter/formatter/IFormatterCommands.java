@@ -6,16 +6,16 @@ import java.util.HashMap;
  * Created by Hns on 18.05.2016.
  * Basic interface for formatting strategies
  */
-public interface IFormatterStrategies {
+public interface IFormatterCommands {
     /**
-     * Returns map with formatting strategy
+     * Returns map with formatting commands
      * @return map containing a certain character formatting commands
      */
-    HashMap<Character, IFormatCommand> getFormatterStrategies();
+    HashMap<Character, FormatCommand> getFormatterCommands();
 
     /**
      * Default command for character processing
      * @return default command for character processing
      */
-    IFormatCommand defaultCommand();
+    FormatCommand defaultCommand();
 }

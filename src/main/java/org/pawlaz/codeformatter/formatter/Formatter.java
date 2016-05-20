@@ -11,18 +11,18 @@ import java.util.HashMap;
  * The formatter produces formatting
  */
 public class Formatter {
-    private HashMap<Character, IFormatCommand> strategiesMap;
-    private IFormatCommand defaultCommand;
+    private HashMap<Character, FormatCommand> commandMap;
+    private FormatCommand defaultCommand;
 
     /**
      * Constructs an Formatter with the specified character processing strategy
-     * @param formatterStrategies - character processing strategy
+     * @param formatterCommands - character processing commands
      * @throws FormatterException if an format error occurs
      */
-    public Formatter(final IFormatterStrategies formatterStrategies) throws FormatterException {
+    public Formatter(final IFormatterCommands formatterCommands) throws FormatterException {
         try {
-            strategiesMap = formatterStrategies.getFormatterStrategies();
-            defaultCommand = formatterStrategies.defaultCommand();
+            commandMap = formatterCommands.getFormatterCommands();
+            defaultCommand = formatterCommands.defaultCommand();
         } catch (Exception e) {
             throw new FormatterException(e);
         }
@@ -38,9 +38,9 @@ public class Formatter {
         char currentSymbol;
         try {
             while (reader.ready()) {
-                currentSymbol = (char) reader.read();
-                if (strategiesMap.containsKey(currentSymbol)) {
-                    writer.writeString(strategiesMap.get(currentSymbol).format(currentSymbol));
+                currentSymbol = reader.read();
+                if (commandMap.containsKey(currentSymbol)) {
+                    writer.writeString(commandMap.get(currentSymbol).format(currentSymbol));
                 } else {
                     writer.writeString(defaultCommand.format(currentSymbol));
                 }
