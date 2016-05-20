@@ -14,11 +14,13 @@ import static org.junit.Assert.fail;
 
 /**
  * Created by Hns on 16.05.2016.
- * Unit test for Formatter class
+ * Unit tests for Formatter class
  */
 public class FormatterTest {
 
     Formatter formatter;
+    IReader reader = null;
+    IWriter writer = null;
 
     final String goodStringFirstLevel = "while (inputStream.hasNext()) {\n" +
             "    char symbol = inputStream.read();\n" +
@@ -33,10 +35,9 @@ public class FormatterTest {
         try {
             PropertiesLoader pl = new PropertiesLoader();
             IFormatterStrategies strategies =
-                    new ProcessStrategies(pl.getSpaceSymbol(),pl.getBaseOffsetCount(),pl.getLineSeparator());
+                    new ProcessStrategies(pl.getIndentSymbol(),pl.getBaseOffsetCount(),pl.getLineSeparator());
             formatter = new Formatter(strategies);
-        }catch (FormatterException | PropertiesLoaderException e)
-        {
+        }catch (FormatterException | PropertiesLoaderException e) {
             fail();
         }
 
@@ -46,12 +47,20 @@ public class FormatterTest {
     public void test0FormatFirstLevel()
     {
         try {
-            IReader reader = null;
-            IWriter writer = new StringWriter();
+            reader = null;
+            writer = new StringWriter();
             formatter.format(reader, writer);
             fail();
         } catch (FormatterException e) {
             //pass
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (Exception ex) {
+                //pass
+            }
         }
     }
 
@@ -59,12 +68,23 @@ public class FormatterTest {
     public void test1FormatFirstLevel()
     {
         try {
-            IReader reader = new StringReader(goodStringFirstLevel);
-            IWriter writer = new StringWriter();
+            reader = new StringReader(goodStringFirstLevel);
+            writer = new StringWriter();
             formatter.format(reader, writer);
             assertEquals(goodStringFirstLevel, writer.toString());
         } catch (FormatterException e) {
             fail();
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (Exception ex) {
+                //pass
+            }
         }
     }
 
@@ -73,12 +93,23 @@ public class FormatterTest {
     {
         try {
             String badString = "while (inputStream.hasNext()){char symbol = inputStream.read();while(true) {method();}}";
-            IReader reader = new StringReader(badString);
-            IWriter writer = new StringWriter();
+            reader = new StringReader(badString);
+            writer = new StringWriter();
             formatter.format(reader,writer);
             assertEquals(goodStringFirstLevel,writer.toString());
         } catch (FormatterException e) {
             fail();
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (Exception ex) {
+                //pass
+            }
         }
     }
 
@@ -87,12 +118,23 @@ public class FormatterTest {
     {
         try {
             String badString = "while (inputStream.hasNext()) {\nchar symbol = inputStream.read(); while(true){method();}\n}\n";
-            IReader reader = new StringReader(badString);
-            IWriter writer = new StringWriter();
+            reader = new StringReader(badString);
+            writer = new StringWriter();
             formatter.format(reader,writer);
             assertEquals(goodStringFirstLevel,writer.toString());
         } catch (FormatterException e) {
             fail();
+        }finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (Exception ex) {
+                //pass
+            }
         }
     }
 }

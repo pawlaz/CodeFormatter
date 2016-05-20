@@ -11,12 +11,12 @@ import java.util.Properties;
  */
 public class PropertiesLoader {
 
-    private char spaceSymbol;
+    private char indentSymbol;
     private int baseOffsetCount;
     private char lineSeparator;
 
-    public char getSpaceSymbol() {
-        return spaceSymbol;
+    public char getIndentSymbol() {
+        return indentSymbol;
     }
 
     public int getBaseOffsetCount() {
@@ -35,7 +35,7 @@ public class PropertiesLoader {
         try (FileInputStream fis = new FileInputStream("src/main/resources/config.properties")) {
             Properties properties = new Properties();
             properties.load(fis);
-            spaceSymbol = (char) Integer.parseInt(properties.getProperty("spaceSymbol"));
+            indentSymbol = (char) Integer.parseInt(properties.getProperty("indentSymbol"));
             baseOffsetCount = Integer.parseInt(properties.getProperty("baseOffsetCount"));
             lineSeparator = (char) Integer.parseInt(properties.getProperty("lineSeparator"));
         } catch (Exception e) {

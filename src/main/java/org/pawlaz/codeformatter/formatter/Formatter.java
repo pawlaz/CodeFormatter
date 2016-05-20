@@ -39,22 +39,14 @@ public class Formatter {
         try {
             while (reader.ready()) {
                 currentSymbol = (char) reader.read();
-                if (strategiesMap.containsKey(currentSymbol))
+                if (strategiesMap.containsKey(currentSymbol)) {
                     writer.writeString(strategiesMap.get(currentSymbol).format(currentSymbol));
-                else
+                } else {
                     writer.writeString(defaultCommand.format(currentSymbol));
+                }
             }
         } catch (Exception e) {
             throw new FormatterException(e);
-        } finally {
-            try {
-                if (reader != null)
-                    reader.close();
-                if (writer != null)
-                    writer.close();
-            } catch (Exception ex) {
-                throw new FormatterException(ex);
-            }
         }
     }
 }

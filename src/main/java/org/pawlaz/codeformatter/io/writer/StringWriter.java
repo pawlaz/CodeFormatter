@@ -31,8 +31,7 @@ public class StringWriter implements IWriter {
      */
     @Override
     public void close() throws WriterException {
-        //как корректно освободить ресурсы?
-       // stringBuilder = null;
+        stringBuilder = null;
     }
 
     @Override
