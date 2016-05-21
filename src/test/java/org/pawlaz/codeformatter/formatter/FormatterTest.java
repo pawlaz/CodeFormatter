@@ -75,22 +75,20 @@ public class FormatterTest {
     }
 
     @Test
-    public void test1FormatFirstLevel()
+    public void test1FormatFirstLevel() throws FormatterException
     {
         try {
             reader = new StringReader(goodStringFirstLevel);
             writer = new StringWriter();
             formatter.format(reader, writer);
             assertEquals(goodStringFirstLevel, writer.toString());
-        } catch (FormatterException e) {
-            logger.log(Level.SEVERE,e.getMessage());
         } finally {
             closeStreams();
         }
     }
 
     @Test
-    public void test2FormatFirstLevel()
+    public void test2FormatFirstLevel() throws FormatterException
     {
         try {
             String badString = "while (inputStream.hasNext()){char symbol = inputStream.read();while(true) {method();}}";
@@ -98,15 +96,13 @@ public class FormatterTest {
             writer = new StringWriter();
             formatter.format(reader,writer);
             assertEquals(goodStringFirstLevel,writer.toString());
-        } catch (FormatterException e) {
-            logger.log(Level.SEVERE,e.getMessage());
         } finally {
             closeStreams();
         }
     }
 
     @Test
-    public void test3FormatFirstLevel()
+    public void test3FormatFirstLevel() throws FormatterException
     {
         try {
             String badString = "while (inputStream.hasNext()) {\nchar symbol = inputStream.read(); while(true){method();}\n}\n";
@@ -114,8 +110,6 @@ public class FormatterTest {
             writer = new StringWriter();
             formatter.format(reader,writer);
             assertEquals(goodStringFirstLevel,writer.toString());
-        } catch (FormatterException e) {
-            logger.log(Level.SEVERE,e.getMessage());
         } finally {
             closeStreams();
         }
