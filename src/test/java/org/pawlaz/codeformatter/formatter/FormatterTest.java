@@ -4,13 +4,17 @@ import org.junit.Test;
 import org.pawlaz.codeformatter.formatter.exceptions.FormatterException;
 import org.pawlaz.codeformatter.io.PropertiesLoader;
 import org.pawlaz.codeformatter.io.exceptions.PropertiesLoaderException;
+import org.pawlaz.codeformatter.io.exceptions.ReaderException;
+import org.pawlaz.codeformatter.io.exceptions.WriterException;
 import org.pawlaz.codeformatter.io.reader.IReader;
 import org.pawlaz.codeformatter.io.reader.StringReader;
 import org.pawlaz.codeformatter.io.writer.IWriter;
 import org.pawlaz.codeformatter.io.writer.StringWriter;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 /**
  * Created by Hns on 16.05.2016.
@@ -21,6 +25,7 @@ public class FormatterTest {
     Formatter formatter;
     IReader reader = null;
     IWriter writer = null;
+    final Logger logger = Logger.getLogger(FormatterTest.class.getName());
 
     final String goodStringFirstLevel = "while (inputStream.hasNext()) {\n" +
             "    char symbol = inputStream.read();\n" +
@@ -30,17 +35,35 @@ public class FormatterTest {
             "}";
 
     @Before
-    public void init()
+    public void setUp()
     {
         try {
             PropertiesLoader pl = new PropertiesLoader();
-            IFormatterCommands strategies =
+            IFormatterCommands commands =
                     new ProcessCommands(pl.getIndentSymbol(),pl.getBaseOffsetCount(),pl.getLineSeparator());
-            formatter = new Formatter(strategies);
+            formatter = new Formatter(commands);
         }catch (FormatterException | PropertiesLoaderException e) {
-            fail();
+            logger.log(Level.SEVERE,e.getMessage());
         }
 
+    }
+
+    private void closeStreams(){
+        try {
+            if (reader != null) {
+                reader.close();
+            }
+        } catch (ReaderException ex) {
+            logger.log(Level.SEVERE,ex.getMessage());
+        }
+
+        try {
+            if (writer != null) {
+                writer.close();
+            }
+        } catch (WriterException ex) {
+            logger.log(Level.SEVERE,ex.getMessage());
+        }
     }
 
     @Test(expected = FormatterException.class)
@@ -60,18 +83,9 @@ public class FormatterTest {
             formatter.format(reader, writer);
             assertEquals(goodStringFirstLevel, writer.toString());
         } catch (FormatterException e) {
-            fail();
+            logger.log(Level.SEVERE,e.getMessage());
         } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-                if (writer != null) {
-                    writer.close();
-                }
-            } catch (Exception ex) {
-                //pass
-            }
+            closeStreams();
         }
     }
 
@@ -85,18 +99,9 @@ public class FormatterTest {
             formatter.format(reader,writer);
             assertEquals(goodStringFirstLevel,writer.toString());
         } catch (FormatterException e) {
-            fail();
+            logger.log(Level.SEVERE,e.getMessage());
         } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-                if (writer != null) {
-                    writer.close();
-                }
-            } catch (Exception ex) {
-                //pass
-            }
+            closeStreams();
         }
     }
 
@@ -110,18 +115,9 @@ public class FormatterTest {
             formatter.format(reader,writer);
             assertEquals(goodStringFirstLevel,writer.toString());
         } catch (FormatterException e) {
-            fail();
-        }finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-                if (writer != null) {
-                    writer.close();
-                }
-            } catch (Exception ex) {
-                //pass
-            }
+            logger.log(Level.SEVERE,e.getMessage());
+        } finally {
+            closeStreams();
         }
     }
 }

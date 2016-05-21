@@ -16,16 +16,22 @@ import org.pawlaz.codeformatter.io.writer.FileWriter;
 import org.pawlaz.codeformatter.io.writer.IWriter;
 import org.pawlaz.codeformatter.io.writer.StringWriter;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Main class
  */
 public final class Main {
+
+    private static final Logger LOG = Logger.getLogger(Main.class.getName());
 
     private Main() {
     }
 
     /**
      * Launches the program
+     *
      * @param args - command line arguments
      */
     public static void main(final String[] args) {
@@ -86,11 +92,16 @@ public final class Main {
                 if (reader != null) {
                     reader.close();
                 }
+            } catch (ReaderException ex) {
+                LOG.log(Level.SEVERE, ex.getMessage());
+            }
+
+            try {
                 if (writer != null) {
                     writer.close();
                 }
-            } catch (ReaderException | WriterException ex) {
-                //pass
+            } catch (WriterException ex) {
+                LOG.log(Level.SEVERE, ex.getMessage());
             }
         }
     }
