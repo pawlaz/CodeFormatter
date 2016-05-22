@@ -32,8 +32,8 @@ public class FSMTables implements ITables {
         stringMaker = new StringMaker(indentSymbol, baseOffsetCount, lineSeparator);
         initOutputAlf();
         initInputAlf();
-        initStates();
-        initOutputSignals();
+        initTransitionTable();
+        initOutputTable();
     }
 
     private void initOutputAlf() {
@@ -104,7 +104,7 @@ public class FSMTables implements ITables {
 
     private void initInputAlf() {
         inputAlf = new ArrayList<>();
-        inputAlf.add('s'); // фикция
+        inputAlf.add('s'); // фикция (unchecked symbols)
         inputAlf.add('{');
         inputAlf.add('}');
         inputAlf.add(';');
@@ -112,7 +112,7 @@ public class FSMTables implements ITables {
         inputAlf.add(stringMaker.getLineSeparator());
     }
 
-    private void initStates() {
+    private void initTransitionTable() {
         transitionTable = new HashMap<>();
         defaultTransition = new ArrayList<>();
         beginState = 0;
@@ -164,7 +164,7 @@ public class FSMTables implements ITables {
         transitionTable.put(inputAlf.get(5), line5State);
     }
 
-    private void initOutputSignals() {
+    private void initOutputTable() {
         outputTable = new HashMap<>();
         defaultOutput = new ArrayList<>();
 

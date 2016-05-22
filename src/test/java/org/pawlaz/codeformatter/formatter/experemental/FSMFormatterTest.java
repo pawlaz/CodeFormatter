@@ -17,11 +17,11 @@ import java.util.logging.Logger;
 import static org.junit.Assert.assertEquals;
 /**
  * Created by Hns on 21.05.2016.
- * Unit-tests for FSMFormatter
+ * Unit-tests for FSMFormatter class
  */
 public class FSMFormatterTest {
 
-    FSMFormatter FSMFormatter;
+    FSMFormatter fsmFormatter;
     IReader reader = null;
     IWriter writer = null;
     final Logger logger = Logger.getLogger(FSMFormatterTest.class.getName());
@@ -39,7 +39,7 @@ public class FSMFormatterTest {
         try {
             PropertiesLoader pl = new PropertiesLoader();
             ITables fsmTables = new FSMTables(pl.getIndentSymbol(),pl.getBaseOffsetCount(),pl.getLineSeparator());
-            FSMFormatter = new FSMFormatter(fsmTables);
+            fsmFormatter = new FSMFormatter(fsmTables);
         }catch (FormatterException | PropertiesLoaderException e) {
             logger.log(Level.SEVERE,e.getMessage());
         }
@@ -68,7 +68,7 @@ public class FSMFormatterTest {
     {
         reader = null;
         writer = null;
-        FSMFormatter.format(reader, writer);
+        fsmFormatter.format(reader, writer);
     }
 
     @Test
@@ -77,7 +77,7 @@ public class FSMFormatterTest {
         try {
             reader = new StringReader(goodStringFirstLevel);
             writer = new StringWriter();
-            FSMFormatter.format(reader, writer);
+            fsmFormatter.format(reader, writer);
             assertEquals(goodStringFirstLevel, writer.toString());
         } finally {
             closeStreams();
@@ -91,7 +91,7 @@ public class FSMFormatterTest {
             String badString = "while (inputStream.hasNext()){char symbol = inputStream.read();while(true) {method();}}";
             reader = new StringReader(badString);
             writer = new StringWriter();
-            FSMFormatter.format(reader,writer);
+            fsmFormatter.format(reader,writer);
             assertEquals(goodStringFirstLevel,writer.toString());
         } finally {
             closeStreams();
@@ -105,7 +105,7 @@ public class FSMFormatterTest {
             String badString = "while (inputStream.hasNext()) {\nchar symbol = inputStream.read(); while(true){method();}\n}\n";
             reader = new StringReader(badString);
             writer = new StringWriter();
-            FSMFormatter.format(reader,writer);
+            fsmFormatter.format(reader,writer);
             assertEquals(goodStringFirstLevel,writer.toString());
         } finally {
             closeStreams();

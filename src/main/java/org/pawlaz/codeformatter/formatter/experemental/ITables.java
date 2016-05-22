@@ -23,8 +23,8 @@ public interface ITables {
     Map<Character, List<FSMCommand>> getOutputTable();
 
     /**
-     * Returns line of output table for other input signals
-     * @return line of output table for other input signals
+     * Returns line of output table for other input signals (unchecked symbols)
+     * @return line of output table for other input signals (unchecked symbols)
      */
     List<FSMCommand> getDefaultOutput();
 
@@ -35,8 +35,8 @@ public interface ITables {
     Map<Character, List<Integer>> getTransitionTable();
 
     /**
-     * Returns line of transition table for other input signals
-     * @return line of transition table for other input signals
+     * Returns line of transition table for other input signals (unchecked symbols)
+     * @return line of transition table for other input signals (unchecked symbols)
      */
     List<Integer> getDefaultTransition();
 }
