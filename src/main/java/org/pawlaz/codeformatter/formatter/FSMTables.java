@@ -1,6 +1,4 @@
-package org.pawlaz.codeformatter.formatter.experemental;
-
-import org.pawlaz.codeformatter.formatter.StringMaker;
+package org.pawlaz.codeformatter.formatter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,12 +11,12 @@ import java.util.Map;
  */
 public class FSMTables implements ITables {
     private List<Character> inputAlf;
-    private List<FSMCommand> outputAlf;
-    private Map<Character, List<FSMCommand>> outputTable;
-    private List<FSMCommand> defaultOutput;
-    private Map<Character, List<Integer>> transitionTable;
-    private List<Integer> defaultTransition;
-    private Integer beginState;
+    private List<FormatCommand> outputAlf;
+    private Map<Character, List<FormatCommand>> outputTable;
+    private List<FormatCommand> defaultOutput;
+    private Map<Character, List<State>> transitionTable;
+    private List<State> defaultTransition;
+    private State beginState;
 
     private StringMaker stringMaker;
 
@@ -39,7 +37,7 @@ public class FSMTables implements ITables {
     private void initOutputAlf() {
         outputAlf = new ArrayList<>();
 
-        outputAlf.add(new FSMCommand() {
+        outputAlf.add(new FormatCommand() {
             @Override
             String format(final Character c) {
                 int nestedLevel = getNestedLevel();
@@ -52,7 +50,7 @@ public class FSMTables implements ITables {
             }
         });
 
-        outputAlf.add(new FSMCommand() {
+        outputAlf.add(new FormatCommand() {
             @Override
             String format(final Character c) {
                 int nestedLevel = getNestedLevel();
@@ -67,7 +65,7 @@ public class FSMTables implements ITables {
             }
         });
 
-        outputAlf.add(new FSMCommand() {
+        outputAlf.add(new FormatCommand() {
             @Override
             String format(final Character c) {
                 stringMaker.addSymbol(c);
@@ -75,7 +73,7 @@ public class FSMTables implements ITables {
             }
         });
 
-        outputAlf.add(new FSMCommand() {
+        outputAlf.add(new FormatCommand() {
             @Override
             String format(final Character c) {
                 stringMaker.addIndentSymbol();
@@ -84,14 +82,14 @@ public class FSMTables implements ITables {
             }
         });
 
-        outputAlf.add(new FSMCommand() {
+        outputAlf.add(new FormatCommand() {
             @Override
             String format(final Character c) {
                 return "";
             }
         });
 
-        outputAlf.add(new FSMCommand() {
+        outputAlf.add(new FormatCommand() {
             @Override
             String format(final Character c) {
                 stringMaker.addLineSeparator();
@@ -115,52 +113,58 @@ public class FSMTables implements ITables {
     private void initTransitionTable() {
         transitionTable = new HashMap<>();
         defaultTransition = new ArrayList<>();
-        beginState = 0;
+        State stateZero = new State(0);
+        State stateOne = new State(1);
+        State stateTwo = new State(2);
+        State stateThree = new State(3);
+        State stateFour = new State(4);
 
-        defaultTransition.add(0);
-        defaultTransition.add(0);
-        defaultTransition.add(0);
-        defaultTransition.add(0);
-        defaultTransition.add(0);
+        beginState = stateZero;
 
-        List<Integer> line1State = new ArrayList<>();
-        line1State.add(1);
-        line1State.add(1);
-        line1State.add(2);
-        line1State.add(3);
-        line1State.add(1);
+        defaultTransition.add(stateZero);
+        defaultTransition.add(stateZero);
+        defaultTransition.add(stateZero);
+        defaultTransition.add(stateZero);
+        defaultTransition.add(stateZero);
+
+        List<State> line1State = new ArrayList<>();
+        line1State.add(stateOne);
+        line1State.add(stateOne);
+        line1State.add(stateTwo);
+        line1State.add(stateThree);
+        line1State.add(stateOne);
         transitionTable.put(inputAlf.get(1), line1State);
 
-        List<Integer> line2State = new ArrayList<>();
-        line2State.add(0);
-        line2State.add(1);
-        line2State.add(2);
-        line2State.add(2);
-        line2State.add(4);
+        List<State> line2State = new ArrayList<>();
+        line2State.add(stateZero);
+        line2State.add(stateOne);
+        line2State.add(stateTwo);
+        line2State.add(stateTwo);
+        line2State.add(stateFour);
         transitionTable.put(inputAlf.get(2), line2State);
 
-        List<Integer> line3State = new ArrayList<>();
-        line3State.add(3);
-        line3State.add(3);
-        line3State.add(3);
-        line3State.add(3);
-        line3State.add(3);
+        List<State> line3State = new ArrayList<>();
+        line3State.add(stateThree);
+        line3State.add(stateThree);
+        line3State.add(stateThree);
+        line3State.add(stateThree);
+        line3State.add(stateThree);
         transitionTable.put(inputAlf.get(3),  line3State);
 
-        List<Integer> line4State = new ArrayList<>();
-        line4State.add(4);
-        line4State.add(1);
-        line4State.add(2);
-        line4State.add(3);
-        line4State.add(4);
+        List<State> line4State = new ArrayList<>();
+        line4State.add(stateFour);
+        line4State.add(stateOne);
+        line4State.add(stateTwo);
+        line4State.add(stateThree);
+        line4State.add(stateFour);
         transitionTable.put(inputAlf.get(4),  line4State);
 
-        List<Integer> line5State = new ArrayList<>();
-        line5State.add(0);
-        line5State.add(1);
-        line5State.add(2);
-        line5State.add(3);
-        line5State.add(4);
+        List<State> line5State = new ArrayList<>();
+        line5State.add(stateZero);
+        line5State.add(stateOne);
+        line5State.add(stateTwo);
+        line5State.add(stateThree);
+        line5State.add(stateFour);
         transitionTable.put(inputAlf.get(5), line5State);
     }
 
@@ -174,7 +178,7 @@ public class FSMTables implements ITables {
         defaultOutput.add(outputAlf.get(5));
         defaultOutput.add(outputAlf.get(3));
 
-        List<FSMCommand> lineOneOut = new ArrayList<>();
+        List<FormatCommand> lineOneOut = new ArrayList<>();
         lineOneOut.add(outputAlf.get(3));
         lineOneOut.add(outputAlf.get(4));
         lineOneOut.add(outputAlf.get(4));
@@ -182,7 +186,7 @@ public class FSMTables implements ITables {
         lineOneOut.add(outputAlf.get(3));
         outputTable.put(inputAlf.get(1), lineOneOut);
 
-        List<FSMCommand> lineTwoOut = new ArrayList<>();
+        List<FormatCommand> lineTwoOut = new ArrayList<>();
         lineTwoOut.add(outputAlf.get(4));
         lineTwoOut.add(outputAlf.get(1));
         lineTwoOut.add(outputAlf.get(1));
@@ -190,7 +194,7 @@ public class FSMTables implements ITables {
         lineTwoOut.add(outputAlf.get(4));
         outputTable.put(inputAlf.get(2), lineTwoOut);
 
-        List<FSMCommand> lineThreeOut = new ArrayList<>();
+        List<FormatCommand> lineThreeOut = new ArrayList<>();
         lineThreeOut.add(outputAlf.get(2));
         lineThreeOut.add(outputAlf.get(0));
         lineThreeOut.add(outputAlf.get(2));
@@ -198,7 +202,7 @@ public class FSMTables implements ITables {
         lineThreeOut.add(outputAlf.get(3));
         outputTable.put(inputAlf.get(3), lineThreeOut);
 
-        List<FSMCommand> lineFourOut = new ArrayList<>();
+        List<FormatCommand> lineFourOut = new ArrayList<>();
         lineFourOut.add(outputAlf.get(4));
         lineFourOut.add(outputAlf.get(4));
         lineFourOut.add(outputAlf.get(4));
@@ -206,7 +210,7 @@ public class FSMTables implements ITables {
         lineFourOut.add(outputAlf.get(4));
         outputTable.put(inputAlf.get(4), lineFourOut);
 
-        List<FSMCommand> lineFiveOut = new ArrayList<>();
+        List<FormatCommand> lineFiveOut = new ArrayList<>();
         lineFiveOut.add(outputAlf.get(4));
         lineFiveOut.add(outputAlf.get(4));
         lineFiveOut.add(outputAlf.get(4));
@@ -216,27 +220,27 @@ public class FSMTables implements ITables {
     }
 
     @Override
-    public int getBeginState() {
+    public State getBeginState() {
         return beginState;
     }
 
     @Override
-    public Map<Character, List<FSMCommand>> getOutputTable() {
+    public Map<Character, List<FormatCommand>> getOutputTable() {
         return outputTable;
     }
 
     @Override
-    public List<FSMCommand> getDefaultOutput() {
+    public List<FormatCommand> getDefaultOutput() {
         return defaultOutput;
     }
 
     @Override
-    public Map<Character, List<Integer>> getTransitionTable() {
+    public Map<Character, List<State>> getTransitionTable() {
         return transitionTable;
     }
 
     @Override
-    public List<Integer> getDefaultTransition() {
+    public List<State> getDefaultTransition() {
         return defaultTransition;
     }
 }

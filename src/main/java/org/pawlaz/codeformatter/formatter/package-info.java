@@ -1,4 +1,4 @@
 /**
- * Provides classes and interfaces formatting strategies and formatter
+ * Provides classes and interfaces for formatting using finite-state machine
  */
 package org.pawlaz.codeformatter.formatter;

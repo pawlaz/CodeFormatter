@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
  * Unit tests for Formatter class
  */
 public class FormatterTest {
-
-    Formatter formatter;
+    Formatter fsmFormatter;
     IReader reader = null;
     IWriter writer = null;
     final Logger logger = Logger.getLogger(FormatterTest.class.getName());
@@ -39,13 +38,11 @@ public class FormatterTest {
     {
         try {
             PropertiesLoader pl = new PropertiesLoader();
-            IFormatterCommands commands =
-                    new ProcessCommands(pl.getIndentSymbol(),pl.getBaseOffsetCount(),pl.getLineSeparator());
-            formatter = new Formatter(commands);
+            ITables fsmTables = new FSMTables(pl.getIndentSymbol(),pl.getBaseOffsetCount(),pl.getLineSeparator());
+            fsmFormatter = new Formatter(fsmTables);
         }catch (FormatterException | PropertiesLoaderException e) {
             logger.log(Level.SEVERE,e.getMessage());
         }
-
     }
 
     private void closeStreams(){
@@ -71,7 +68,7 @@ public class FormatterTest {
     {
         reader = null;
         writer = null;
-        formatter.format(reader, writer);
+        fsmFormatter.format(reader, writer);
     }
 
     @Test
@@ -80,7 +77,7 @@ public class FormatterTest {
         try {
             reader = new StringReader(goodStringFirstLevel);
             writer = new StringWriter();
-            formatter.format(reader, writer);
+            fsmFormatter.format(reader, writer);
             assertEquals(goodStringFirstLevel, writer.toString());
         } finally {
             closeStreams();
@@ -94,7 +91,7 @@ public class FormatterTest {
             String badString = "while (inputStream.hasNext()){char symbol = inputStream.read();while(true) {method();}}";
             reader = new StringReader(badString);
             writer = new StringWriter();
-            formatter.format(reader,writer);
+            fsmFormatter.format(reader,writer);
             assertEquals(goodStringFirstLevel,writer.toString());
         } finally {
             closeStreams();
@@ -108,7 +105,7 @@ public class FormatterTest {
             String badString = "while (inputStream.hasNext()) {\nchar symbol = inputStream.read(); while(true){method();}\n}\n";
             reader = new StringReader(badString);
             writer = new StringWriter();
-            formatter.format(reader,writer);
+            fsmFormatter.format(reader,writer);
             assertEquals(goodStringFirstLevel,writer.toString());
         } finally {
             closeStreams();

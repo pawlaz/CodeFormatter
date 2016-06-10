@@ -1,9 +1,9 @@
 package org.pawlaz.codeformatter;
 
 
+import org.pawlaz.codeformatter.formatter.FSMTables;
 import org.pawlaz.codeformatter.formatter.Formatter;
-import org.pawlaz.codeformatter.formatter.IFormatterCommands;
-import org.pawlaz.codeformatter.formatter.ProcessCommands;
+import org.pawlaz.codeformatter.formatter.ITables;
 import org.pawlaz.codeformatter.formatter.exceptions.FormatterException;
 import org.pawlaz.codeformatter.io.PropertiesLoader;
 import org.pawlaz.codeformatter.io.exceptions.PropertiesLoaderException;
@@ -38,7 +38,6 @@ public final class Main {
         IReader reader = null;
         IWriter writer = null;
         Formatter formatter;
-        IFormatterCommands commands;
         PropertiesLoader pl;
 
         try {
@@ -68,8 +67,8 @@ public final class Main {
                 }
 
                 pl = new PropertiesLoader();
-                commands = new ProcessCommands(pl.getIndentSymbol(), pl.getBaseOffsetCount(), pl.getLineSeparator());
-                formatter = new Formatter(commands);
+                ITables fsmTables = new FSMTables(pl.getIndentSymbol(),pl.getBaseOffsetCount(),pl.getLineSeparator());
+                formatter = new Formatter(fsmTables);
                 formatter.format(reader, writer);
 
                 if ("-s".equals(args[0])) {
