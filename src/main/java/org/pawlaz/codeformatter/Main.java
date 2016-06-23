@@ -1,9 +1,7 @@
 package org.pawlaz.codeformatter;
 
 
-import org.pawlaz.codeformatter.formatter.FSMTables;
-import org.pawlaz.codeformatter.formatter.Formatter;
-import org.pawlaz.codeformatter.formatter.ITables;
+import org.pawlaz.codeformatter.formatter.*;
 import org.pawlaz.codeformatter.formatter.exceptions.FormatterException;
 import org.pawlaz.codeformatter.io.PropertiesLoader;
 import org.pawlaz.codeformatter.io.exceptions.PropertiesLoaderException;
@@ -67,7 +65,8 @@ public final class Main {
                 }
 
                 pl = new PropertiesLoader();
-                ITables fsmTables = new FSMTables(pl.getIndentSymbol(),pl.getBaseOffsetCount(),pl.getLineSeparator());
+                ITablesMaker tablesMaker = new TablesMaker(pl.getIndentSymbol(), pl.getBaseOffsetCount(), pl.getLineSeparator());
+                ITables fsmTables = new FSMTables(tablesMaker.getBeginState(), tablesMaker.getOutputTable(), tablesMaker.getTransitionTable());
                 formatter = new Formatter(fsmTables);
                 formatter.format(reader, writer);
 

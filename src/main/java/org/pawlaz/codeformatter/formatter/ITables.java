@@ -1,8 +1,5 @@
 package org.pawlaz.codeformatter.formatter;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * Created by Hns on 22.05.2016.
  * Basic interface for tables of finite-state machine
@@ -16,26 +13,19 @@ public interface ITables {
     State getBeginState();
 
     /**
-     * Returns output table
-     * @return output table for FSM
+     * Returns next state of FSM
+     * @param currentSymbol - current input symbol of FSM
+     * @param currentState - current state of FSM
+     * @return next state of FSM
      */
-    Map<Character, List<FormatCommand>> getOutputTable();
+    State getNextState(final char currentSymbol, final State currentState);
 
     /**
-     * Returns line of output table for other input signals (unchecked symbols)
-     * @return line of output table for other input signals (unchecked symbols)
+     * Returns output signal of FSM
+     * @param currentSymbol - current input symbol of FSM
+     * @param currentState - current state of FSM
+     * @return output signal of FSM
      */
-    List<FormatCommand> getDefaultOutput();
+    String getOutputSignal(final char currentSymbol, final State currentState);
 
-    /**
-     * Returns transition table for FSM
-     * @return transition table for FSM
-     */
-    Map<Character, List<State>> getTransitionTable();
-
-    /**
-     * Returns line of transition table for other input signals (unchecked symbols)
-     * @return line of transition table for other input signals (unchecked symbols)
-     */
-    List<State> getDefaultTransition();
 }

@@ -38,7 +38,8 @@ public class FormatterTest {
     {
         try {
             PropertiesLoader pl = new PropertiesLoader();
-            ITables fsmTables = new FSMTables(pl.getIndentSymbol(),pl.getBaseOffsetCount(),pl.getLineSeparator());
+            ITablesMaker tablesMaker = new TablesMaker(pl.getIndentSymbol(),pl.getBaseOffsetCount(),pl.getLineSeparator());
+            ITables fsmTables = new FSMTables(tablesMaker.getBeginState(),tablesMaker.getOutputTable(),tablesMaker.getTransitionTable());
             fsmFormatter = new Formatter(fsmTables);
         }catch (FormatterException | PropertiesLoaderException e) {
             logger.log(Level.SEVERE,e.getMessage());

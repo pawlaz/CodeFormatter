@@ -4,19 +4,13 @@ import org.pawlaz.codeformatter.formatter.exceptions.FormatterException;
 import org.pawlaz.codeformatter.io.reader.IReader;
 import org.pawlaz.codeformatter.io.writer.IWriter;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * Created by Hns on 21.05.2016.
  * finite-state machine produces formatting
  */
 public class Formatter {
 
-    private Map<Character, List<FormatCommand>> outputTable;
-    private Map<Character, List<State>> transitionTable;
-    private List<FormatCommand> defaultOutput;
-    private List<State> defaultTransition;
+    private ITables tables;
     private State beginState;
 
     /**
@@ -26,15 +20,11 @@ public class Formatter {
      */
     public Formatter(final ITables tables) throws FormatterException {
         try {
-            outputTable = tables.getOutputTable();
-            transitionTable = tables.getTransitionTable();
-            defaultOutput = tables.getDefaultOutput();
-            defaultTransition = tables.getDefaultTransition();
+            this.tables = tables;
             beginState = tables.getBeginState();
         } catch (Exception e) {
             throw new FormatterException(e);
         }
-
     }
 
     /**
@@ -49,13 +39,8 @@ public class Formatter {
         try {
             while (reader.ready()) {
                 currentSymbol = reader.read();
-                if (outputTable.containsKey(currentSymbol)) {
-                    writer.writeString(outputTable.get(currentSymbol).get(currentState.getIndex()).format(currentSymbol));
-                    currentState = transitionTable.get(currentSymbol).get(currentState.getIndex());
-                } else {
-                    writer.writeString(defaultOutput.get(currentState.getIndex()).format(currentSymbol));
-                    currentState = defaultTransition.get(currentState.getIndex());
-                }
+                writer.writeString(tables.getOutputSignal(currentSymbol, currentState));
+                currentState = tables.getNextState(currentSymbol, currentState);
             }
         } catch (Exception e) {
             throw new FormatterException(e);
